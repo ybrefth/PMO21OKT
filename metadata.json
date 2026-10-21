@@ -1,0 +1,6 @@
+{
+  "name": "PMO Pre-Project Documentation Hub",
+  "description": "Minimalist PMO pre-project documentation tool featuring Project Charter, database-assisted WBS generator (Level 1-6), automated Critical Path Method (CPM) diagram & calculations, and 40-item pre-project readiness checklist with auto-timeline.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
