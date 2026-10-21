@@ -6,6 +6,379 @@ export interface WBSRecommendationNode {
 
 export const WBS_DATABASE: WBSRecommendationNode[] = [
   {
+    name: "Pengembangan Jaringan PDAM (Water Pipeline)",
+    children: [
+      {
+        name: "Persiapan Umum",
+        children: [
+          {
+            name: "Persiapan Lahan",
+            children: [
+              {
+                name: "Melakukan survei lokasi",
+                children: [
+                  {
+                    name: "Pemeriksaan lahan rencana & koordinasi shaft",
+                    children: [
+                      { name: "Penerbitan Berita Acara & Dokumen Perizinan", defaultDurationDays: 3 }
+                    ]
+                  },
+                  {
+                    name: "Pengukuran ulang & benchmarking geodesi",
+                    children: [
+                      { name: "Pematokan elevasi rencana pipa", defaultDurationDays: 2 }
+                    ]
+                  }
+                ]
+              },
+              {
+                name: "Pembuatan pagar sementara dan papan nama proyek",
+                children: [
+                  {
+                    name: "Membuat dan memasang pagar pengaman",
+                    children: [
+                      { name: "Pemasangan banner informasi K3", defaultDurationDays: 2 }
+                    ]
+                  }
+                ]
+              },
+              {
+                name: "Kegiatan sosialisasi proyek kepada masyarakat",
+                children: [
+                  {
+                    name: "Penyuluhan dan pembagian informasi proyek",
+                    children: [
+                      { name: "Absensi dan kesepakatan warga", defaultDurationDays: 2 }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            name: "Operasional",
+            children: [
+              {
+                name: "Menyediakan bangunan kantor kontraktor & gudang",
+                children: [
+                  {
+                    name: "Sewa bangunan dan pembersihan fasilitas",
+                    children: [
+                      { name: "Penyediaan instalasi air dan sanitasi", defaultDurationDays: 3 }
+                    ]
+                  }
+                ]
+              },
+              {
+                name: "Keamanan dan Manajemen Lapangan K3",
+                children: [
+                  {
+                    name: "Penyuluhan Program K3 kepada Pekerja",
+                    children: [
+                      { name: "Inspeksi APD dan sertifikasi peralatan", defaultDurationDays: 2 }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            name: "Mobilisasi",
+            children: [
+              {
+                name: "Pengangkutan Peralatan ke Lokasi Kerja",
+                children: [
+                  {
+                    name: "Mobilisasi Excavator & Mesin Butt Fusion",
+                    children: [
+                      { name: "Pemeriksaan kondisi laik operasi alat", defaultDurationDays: 2 }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        name: "Perencanaan Teknis",
+        children: [
+          {
+            name: "Survei dan Investigasi",
+            children: [
+              {
+                name: "Pengumpulan Data Lapangan & Geoteknik",
+                children: [
+                  {
+                    name: "Uji Sondir & Uji Laboratorium Sampel",
+                    children: [
+                      { name: "Laporan Evaluasi Tanah Subgrade", defaultDurationDays: 4 }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            name: "Perancangan Teknik (DED)",
+            children: [
+              {
+                name: "Penyusunan Gambar Kerja Detail",
+                children: [
+                  {
+                    name: "Desain Profil Memanjang & Melintang Pipa",
+                    children: [
+                      { name: "Approval Konsultan Pengawas", defaultDurationDays: 5 }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            name: "Perizinan dan Persetujuan",
+            children: [
+              {
+                name: "Pengurusan Izin Pemanfaatan Jalan PU",
+                children: [
+                  {
+                    name: "Koordinasi Pemilik Utilitas Lain",
+                    children: [
+                      { name: "Surat Rekomendasi Teknis", defaultDurationDays: 3 }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        name: "Pengadaan Material dan Jasa",
+        children: [
+          {
+            name: "Pengadaan Material Pipa dan Aksesoris",
+            children: [
+              {
+                name: "Pengadaan Pipa Distribusi HDPE 12 km",
+                children: [
+                  {
+                    name: "Fabrikasi & Pengiriman Pipa ke Site",
+                    children: [
+                      { name: "Inspeksi Mutu Pipa di Gudang", defaultDurationDays: 7 }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            name: "Pengadaan Peralatan",
+            children: [
+              {
+                name: "Sewa Mesin Butt Fusion & Pompa Dewatering",
+                children: [
+                  {
+                    name: "Kalibrasi Alat Las Pipa HDPE",
+                    children: [
+                      { name: "Uji Coba Pengelasan Sampel", defaultDurationDays: 2 }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            name: "Pengadaan Jasa Kontraktor",
+            children: [
+              {
+                name: "Seleksi Subkontraktor Galian & Pipelaying",
+                children: [
+                  {
+                    name: "Penandatanganan Kontrak Kerja SPK",
+                    children: [
+                      { name: "Kickoff Meeting Pelaksanaan", defaultDurationDays: 2 }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        name: "Konstruksi Jaringan",
+        children: [
+          {
+            name: "Pekerjaan Gali dan Urug",
+            children: [
+              {
+                name: "Pekerjaan Galian Parit Jalur Pipa",
+                children: [
+                  {
+                    name: "Galian Parit dengan Mini Excavator",
+                    children: [
+                      { name: "Perapihan Dasar Parit & Bantalan Pasir", defaultDurationDays: 6 }
+                    ]
+                  }
+                ]
+              },
+              {
+                name: "Pekerjaan Urug Kembali dan Pemadatan",
+                children: [
+                  {
+                    name: "Penimbunan Lapisan Pasir Pengaman Pipa",
+                    children: [
+                      { name: "Pemadatan Subbase & Perapihan Bekas Galian", defaultDurationDays: 4 }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            name: "Pemasangan Pipa dan Aksesoris",
+            children: [
+              {
+                name: "Penyambungan Pipa HDPE & Fitting",
+                children: [
+                  {
+                    name: "Penurunan Pipa ke dalam Parit Galian",
+                    children: [
+                      { name: "Pemasangan Thrust Block & Valve Chamber", defaultDurationDays: 5 }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            name: "Pekerjaan Struktur dan Kelengkapan",
+            children: [
+              {
+                name: "Pembuatan Bak Kontrol & Manhole Valve",
+                children: [
+                  {
+                    name: "Pengecoran Beton Mutu K-250",
+                    children: [
+                      { name: "Pemasangan Cover Cast Iron Manhole", defaultDurationDays: 3 }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        name: "Pengujian dan Serah Terima",
+        children: [
+          {
+            name: "Pengujian Jaringan Pipa",
+            children: [
+              {
+                name: "Hydrostatic Pressure Test (Uji Tekan)",
+                children: [
+                  {
+                    name: "Pengisian Air & Peningkatan Tekanan Uji",
+                    children: [
+                      { name: "Pencatatan Penurunan Tekanan per 2 Jam", defaultDurationDays: 3 }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            name: "Desinfeksi dan Pembilasan Pipa",
+            children: [
+              {
+                name: "Flushing Air Bersih & Klorinasi",
+                children: [
+                  {
+                    name: "Pengambilan Sampel Air Laboratorium",
+                    children: [
+                      { name: "Penerbitan Sertifikat Kualitas Air", defaultDurationDays: 2 }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            name: "Serah Terima dan Dokumentasi",
+            children: [
+              {
+                name: "Penyusunan As-Built Drawing Lengkap",
+                children: [
+                  {
+                    name: "Final Inspection bersama Tim Operasi PDAM",
+                    children: [
+                      { name: "Penandatanganan Berita Acara Serah Terima (BAST)", defaultDurationDays: 2 }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        name: "Operasi dan Pemeliharaan Awal",
+        children: [
+          {
+            name: "Uji Coba Operasi Aliran Pipa",
+            children: [
+              {
+                name: "Penyaluran Air Bersih ke Pelanggan",
+                children: [
+                  {
+                    name: "Monitoring Tekanan di Ujung Jaringan",
+                    children: [
+                      { name: "Verifikasi Debit Aliran Minimum", defaultDurationDays: 3 }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            name: "Pelatihan Operator Lapangan",
+            children: [
+              {
+                name: "Workshop Operasional Valve & Flushing",
+                children: [
+                  {
+                    name: "Simulasi Penanganan Kebocoran Darurat",
+                    children: [
+                      { name: "Penyerahan Manual SOP Pemeliharaan", defaultDurationDays: 2 }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            name: "Pemeliharaan Awal (Defect Liability Period)",
+            children: [
+              {
+                name: "Inspeksi Berkala Mingguan",
+                children: [
+                  {
+                    name: "Perbaikan Minor Cacat Pekerjaan",
+                    children: [
+                      { name: "Penerbitan Final Handover Certificate", defaultDurationDays: 2 }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
     name: "Pengerukan Tanah & Pekerjaan Tanah",
     children: [
       {

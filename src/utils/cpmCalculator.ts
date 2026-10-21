@@ -1,11 +1,13 @@
 import { CPMTask, CPMCalculationResult, CrashingRecommendation } from '../types/pmo';
 
-export function calculateCPM(inputTasks: CPMTask[]): CPMCalculationResult {
+export function calculateCPM(inputTasks: CPMTask[], targetDurationInput?: number): CPMCalculationResult {
   if (!inputTasks || inputTasks.length === 0) {
     return {
       tasks: [],
       criticalPath: [],
       totalDuration: 0,
+      targetDuration: targetDurationInput || 0,
+      durationVariance: 0,
       criticalTasksCount: 0,
       nonCriticalTasksCount: 0,
       averageSlack: 0,
@@ -14,7 +16,7 @@ export function calculateCPM(inputTasks: CPMTask[]): CPMCalculationResult {
     };
   }
 
-  // Clone tasks to avoid mutating props directly
+  // Clone tasks
   const taskMap = new Map<string, CPMTask>();
   const inDegree = new Map<string, number>();
   const successorsMap = new Map<string, string[]>();
@@ -50,7 +52,7 @@ export function calculateCPM(inputTasks: CPMTask[]): CPMCalculationResult {
     inDegree.set(task.id, task.predecessors.length);
   });
 
-  // Kahn's algorithm for topological sorting and cycle detection
+  // Kahn's algorithm for topological sorting
   const queue: string[] = [];
   inDegree.forEach((degree, taskId) => {
     if (degree === 0) {
@@ -81,6 +83,8 @@ export function calculateCPM(inputTasks: CPMTask[]): CPMCalculationResult {
       tasks: Array.from(taskMap.values()),
       criticalPath: [],
       totalDuration: 0,
+      targetDuration: targetDurationInput || 0,
+      durationVariance: 0,
       criticalTasksCount: 0,
       nonCriticalTasksCount: 0,
       averageSlack: 0,
@@ -89,7 +93,7 @@ export function calculateCPM(inputTasks: CPMTask[]): CPMCalculationResult {
     };
   }
 
-  // 1. FORWARD PASS
+  // 1. FORWARD PASS (in Weeks)
   topoOrder.forEach(taskId => {
     const task = taskMap.get(taskId)!;
     if (task.predecessors.length === 0) {
@@ -108,12 +112,19 @@ export function calculateCPM(inputTasks: CPMTask[]): CPMCalculationResult {
   });
 
   // Total project duration is maximum EF
-  let totalDuration = 0;
+  let calculatedDuration = 0;
   taskMap.forEach(task => {
-    if ((task.ef || 0) > totalDuration) {
-      totalDuration = task.ef || 0;
+    if ((task.ef || 0) > calculatedDuration) {
+      calculatedDuration = task.ef || 0;
     }
   });
+
+  // Use target duration if specified by user and >= 1, otherwise use calculated duration
+  const targetDuration = (targetDurationInput && targetDurationInput > 0)
+    ? targetDurationInput
+    : calculatedDuration;
+
+  const durationVariance = targetDuration - calculatedDuration;
 
   // 2. BACKWARD PASS (in reverse topological order)
   const reversedTopo = [...topoOrder].reverse();
@@ -122,7 +133,7 @@ export function calculateCPM(inputTasks: CPMTask[]): CPMCalculationResult {
     const succs = successorsMap.get(taskId) || [];
 
     if (succs.length === 0) {
-      task.lf = totalDuration;
+      task.lf = targetDuration;
     } else {
       let minSuccessorLS = Infinity;
       succs.forEach(sId => {
@@ -131,16 +142,16 @@ export function calculateCPM(inputTasks: CPMTask[]): CPMCalculationResult {
           minSuccessorLS = succ.ls!;
         }
       });
-      task.lf = minSuccessorLS === Infinity ? totalDuration : minSuccessorLS;
+      task.lf = minSuccessorLS === Infinity ? targetDuration : minSuccessorLS;
     }
     task.ls = (task.lf || 0) - task.duration;
 
-    // Total Float (Slack)
-    task.slack = Math.max(0, (task.ls || 0) - (task.es || 0));
+    // Total Float (Slack in Weeks)
+    task.slack = (task.ls || 0) - (task.es || 0);
 
     // Free Float: min(ES of successors) - EF
     if (succs.length === 0) {
-      task.freeSlack = Math.max(0, totalDuration - (task.ef || 0));
+      task.freeSlack = Math.max(0, targetDuration - (task.ef || 0));
     } else {
       let minSuccES = Infinity;
       succs.forEach(sId => {
@@ -149,51 +160,61 @@ export function calculateCPM(inputTasks: CPMTask[]): CPMCalculationResult {
           minSuccES = succ.es!;
         }
       });
-      task.freeSlack = Math.max(0, (minSuccES === Infinity ? totalDuration : minSuccES) - (task.ef || 0));
+      task.freeSlack = Math.max(0, (minSuccES === Infinity ? targetDuration : minSuccES) - (task.ef || 0));
     }
 
-    // Critical check
-    task.isCritical = Math.abs(task.slack) < 0.001;
+    // Critical check: task on critical path has minimal slack (slack <= variance or slack == minSlack)
+    // When targetDuration == calculatedDuration, slack == 0
+    task.isCritical = Math.abs(task.slack - Math.min(0, durationVariance)) < 0.001 || (durationVariance >= 0 && Math.abs(task.slack - durationVariance) < 0.001 && task.duration > 0);
   });
 
-  // Find critical path sequence
-  // Follow critical path from start node to end
+  // Find min slack across all tasks to reliably identify critical path
+  let minSlack = Infinity;
+  taskMap.forEach(t => {
+    if ((t.slack ?? 0) < minSlack) minSlack = t.slack ?? 0;
+  });
+  taskMap.forEach(t => {
+    if (Math.abs((t.slack ?? 0) - minSlack) < 0.001) {
+      t.isCritical = true;
+    } else {
+      t.isCritical = false;
+    }
+  });
+
   const criticalTasks = topoOrder
     .map(id => taskMap.get(id)!)
     .filter(t => t.isCritical);
 
   const criticalPathIds = criticalTasks.map(t => t.id);
 
-  // Statistics
   const nonCritical = Array.from(taskMap.values()).filter(t => !t.isCritical);
   const totalSlackSum = nonCritical.reduce((acc, t) => acc + (t.slack || 0), 0);
   const averageSlack = nonCritical.length > 0 ? Math.round((totalSlackSum / nonCritical.length) * 10) / 10 : 0;
 
-  // Crashing recommendations (Activities on critical path that can be shortened)
+  // Crashing recommendations in WEEKS
   const crashingRecommendations: CrashingRecommendation[] = [];
-
   criticalTasks.forEach(task => {
-    // Activities with duration > 2 days can be realistically crashed
-    if (task.duration > 2) {
-      const maxReduction = Math.max(1, Math.floor(task.duration * 0.4)); // e.g. up to 40%
+    if (task.duration >= 2) {
+      const maxReduction = Math.max(1, Math.floor(task.duration * 0.4));
       crashingRecommendations.push({
         taskId: task.id,
         taskName: task.name,
         currentDuration: task.duration,
         recommendedMaxReduction: maxReduction,
-        rationale: `Bottleneck activity on critical path. Compressing by 1-${maxReduction} days (via extra resource/shift) directly advances the overall project schedule.`,
-        priority: task.duration >= 10 ? 'High' : task.duration >= 5 ? 'Medium' : 'Low'
+        rationale: `Aktivitas kritis pada jalur utama. Mempercepat 1-${maxReduction} minggu (tambah tim/alat) langsung memajukan jadwal akhir proyek.`,
+        priority: task.duration >= 6 ? 'Tinggi' : task.duration >= 3 ? 'Sedang' : 'Rendah'
       });
     }
   });
 
-  // Sort crashing recommendation by duration descending (biggest potential time savings first)
   crashingRecommendations.sort((a, b) => b.currentDuration - a.currentDuration);
 
   return {
     tasks: topoOrder.map(id => taskMap.get(id)!),
     criticalPath: criticalPathIds,
-    totalDuration,
+    totalDuration: calculatedDuration,
+    targetDuration,
+    durationVariance,
     criticalTasksCount: criticalTasks.length,
     nonCriticalTasksCount: nonCritical.length,
     averageSlack,

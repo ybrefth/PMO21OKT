@@ -7,19 +7,43 @@
 }
 
 @media print {
-  /* Hide interactive chrome and buttons when printing / exporting PDF */
+  @page {
+    size: A4 portrait;
+    margin: 8mm 10mm;
+  }
+
+  /* Hide screen chrome, modals, and non-printable elements */
   .no-print,
   nav,
   header,
+  footer,
   button,
-  .print-hide {
+  .print-hide,
+  .modal-backdrop,
+  [role="dialog"] {
     display: none !important;
   }
 
-  body {
+  html, body {
     background: white !important;
-    color: black !important;
-    font-size: 11pt !important;
+    color: #0f172a !important;
+    font-size: 8.5pt !important;
+    line-height: 1.25 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  #root, main {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
   }
 
   .print-only {
@@ -27,15 +51,39 @@
   }
 
   .printable-document {
+    display: block !important;
     padding: 0 !important;
     margin: 0 !important;
     border: none !important;
     box-shadow: none !important;
     max-width: 100% !important;
     width: 100% !important;
+    overflow: visible !important;
   }
 
-  .page-break {
-    page-break-before: always;
+  .print-page {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .print-page-1 {
+    page-break-after: always !important;
+    break-after: page !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .print-page-2 {
+    page-break-after: auto !important;
+    break-after: auto !important;
+    page-break-before: always !important;
+    break-before: page !important;
+  }
+
+  .print-no-split {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
   }
 }

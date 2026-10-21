@@ -1,129 +1,179 @@
-import { ProjectCharterData, WBSNode, CPMTask } from '../types/pmo';
+import { ProjectCharterData, WBSNode, CPMTask, Project } from '../types/pmo';
+import { INITIAL_READINESS_CHECKLIST } from './readinessChecklistData';
 
 export const DEFAULT_PROJECT_CHARTER: ProjectCharterData = {
-  projectName: "Proyek Pengerukan Tanah & Penyiapan Lahan Kawasan Industri",
-  projectCode: "PMO-PRE-2026-084",
-  projectSponsor: "Ir. Hendra Gunawan, M.T. (Director of Infrastructure)",
-  projectManager: "Aubrey Fathur, PMP (Senior Project Manager)",
-  startDate: "2026-11-01",
-  targetEndDate: "2027-04-30",
-  budgetEstimated: "14,500,000,000",
-  currency: "IDR",
+  projectName: "Pembangunan Jaringan Distribusi Air Bersih Kawasan Cikarang Timur",
+  projectCode: "MOYA-CKR-2026-01",
+  projectSponsor: "General Manager Operations",
+  projectManager: "Ahmad Fauzi",
+  startDate: "2026-08-01",
+  targetEndDate: "2027-01-31",
+  durationText: "6 Bulan (1 Agustus 2026 – 31 Januari 2027)",
+  budgetEstimated: "15 Miliar",
+  currency: "Rp",
   selectedScopeCategories: [
-    "Pengerukan & Cut/Fill",
-    "Survei Topografi & Geoteknik",
-    "Dewatering & Shoring",
-    "Disposal & Hauling Logistik",
-    "Uji Pemadatan Subgrade",
-    "HSE & Izin Lingkungan"
+    "Pipa Distribusi 12 km",
+    "Survey & Engineering",
+    "Pekerjaan Galian",
+    "Hydrotest & Flushing",
+    "Perizinan & AMDAL"
   ],
-  scopeObjectives: "Melaksanakan penyiapan lahan seluas 18,5 Hektar meliputi pekerjaan pengerukan tanah (cut) 120.000 m3, pengurukan dan pemadatan subgrade (fill) 45.000 m3, serta pengangkutan disposal material berizin untuk persiapan konstruksi fasilitas utama pabrik manufaktur.",
-  inScopeDeliverables: "1. Pembersihan dan pembabatan vegetasi lahan (Land clearing 18.5 Ha).\n2. Pengerukan tanah sampai elevasi rencana (+12.500 m DPL).\n3. Pemasangan sistem dewatering dan dinding penahan tanah sementara (shoring).\n4. Pengangkutan dan pembuangan sisa galian ke designated disposal area (berizin LH).\n5. Penghamparan, perataan, dan pemadatan lapis per lapis dengan uji kepadatan 95% MDD.\n6. Berita Acara Serah Terima (BAST) kesiapan lahan dan sertifikat sondir/sand cone.",
-  outOfScopeExclusions: "1. Pembangunan struktur permanen gedung pabrik dan pondasi tiang pancang (paket kontrak terpisah).\n2. Penyambungan daya listrik tegangan tinggi PLN permanen (hanya genset kerja sementara).\n3. Pengaspalan jalan lingkungan kawasan industri tahap akhir.",
-  keyAssumptions: "1. Izin lingkungan UKL-UPL dan akses jalan angkut truk telah tuntas sebelum tanggal mulai galian.\n2. Kondisi cuaca rata-rata normal dengan toleransi hujan 5 hari/bulan.\n3. Akses quarry material timbunan pilihan berjarak kurang dari 15 km.",
+  scopeObjectives: "Membangun jaringan distribusi air sepanjang 12 km untuk meningkatkan kapasitas distribusi air bersih.",
+  inScopeDeliverables: "1. Approved Engineering Drawing\n2. Jaringan pipa 12 km terpasang\n3. BAST Handover Proyek",
+  outOfScopeExclusions: "1. Sambungan rumah tangga (SR)\n2. Pembangunan reservoir baru",
+  keyAssumptions: "Izin jalan kabupaten tuntas sebelum galian pipa dimulai.",
+  // Attachment 1 detailed sections:
+  businessNeed: "Untuk meningkatkan cakupan layanan air bersih dan memenuhi kebutuhan pelanggan baru di Kawasan Cikarang Timur, PT Moya Indonesia akan membangun jaringan distribusi air baru sepanjang 12 km yang terhubung dengan reservoir existing. Proyek ini diharapkan dapat meningkatkan kapasitas distribusi, mengurangi gangguan layanan, dan mendukung pertumbuhan pelanggan.",
+  projectObjectives: [
+    "Membangun jaringan distribusi air sepanjang 12 km.",
+    "Menyelesaikan proyek dalam waktu 6 bulan.",
+    "Menyelesaikan proyek sesuai anggaran yang telah disetujui.",
+    "Mendukung penambahan 3.000 pelanggan baru.",
+    "Memenuhi standar kualitas, keselamatan kerja, dan regulasi yang berlaku."
+  ],
+  inScope: [
+    "Survey lapangan",
+    "Engineering design",
+    "Pengadaan material pipa",
+    "Pekerjaan galian",
+    "Instalasi pipa distribusi",
+    "Hydrotest dan flushing",
+    "Commissioning",
+    "Penyusunan as-built drawing",
+    "Handover ke tim operasi"
+  ],
+  outOfScope: [
+    "Sambungan rumah pelanggan",
+    "Pembangunan reservoir baru",
+    "Pengadaan lahan",
+    "Operasional pasca handover"
+  ],
+  keyDeliverables: [
+    "Approved Engineering Drawing",
+    "Jaringan distribusi air 12 km terpasang",
+    "Hasil hydrotest memenuhi standar",
+    "As-built drawing lengkap",
+    "Dokumen handover proyek",
+    "Berita Acara Serah Terima Proyek"
+  ],
+  topRisks: [
+    "Keterlambatan permit",
+    "Konflik dengan utilitas existing",
+    "Keterlambatan pengadaan material",
+    "Keluhan masyarakat selama pekerjaan"
+  ],
+  successCriteria: [
+    "Proyek selesai maksimal 31 Januari 2027",
+    "Deviasi biaya tidak melebihi 5%",
+    "Zero Fatality Accident",
+    "Tidak terjadi kerusakan utilitas major",
+    "As-built drawing disetujui",
+    "Handover diterima oleh tim operasi"
+  ],
+  keyMilestones: [
+    { id: "m-1", no: 1, milestone: "Survey & Engineering Design Selesai", targetDate: "31 Agustus 2026" },
+    { id: "m-2", no: 2, milestone: "Permit & Perizinan Selesai", targetDate: "30 September 2026" },
+    { id: "m-3", no: 3, milestone: "Instalasi Pipa Utama Selesai", targetDate: "30 November 2026" },
+    { id: "m-4", no: 4, milestone: "Hydrotest & Commissioning Selesai", targetDate: "15 Januari 2027" },
+    { id: "m-5", no: 5, milestone: "Handover & Project Closeout", targetDate: "31 Januari 2027" }
+  ],
   stakeholders: [
-    {
-      id: "sh-1",
-      role: "Sponsor",
-      name: "Ir. Hendra Gunawan, M.T.",
-      title: "Vice President Infrastructure Development",
-      email: "h.gunawan@infrastructure-corp.id",
-      phone: "+62 811-9876-5432",
-      department: "Executive Board"
-    },
-    {
-      id: "sh-2",
-      role: "PM",
-      name: "Aubrey Fathur, PMP",
-      title: "Lead Project Manager PMO",
-      email: "aubrey.f@infrastructure-corp.id",
-      phone: "+62 812-3456-7890",
-      department: "PMO Division"
-    },
-    {
-      id: "sh-3",
-      role: "Steering Committee",
-      name: "Dra. Maya Kartika, MBA",
-      title: "Director of Risk & Corporate Governance",
-      email: "m.kartika@infrastructure-corp.id",
-      phone: "+62 813-1122-3344",
-      department: "Risk & Governance"
-    },
-    {
-      id: "sh-4",
-      role: "Vendor",
-      name: "PT Bumi Megah Perkasa (Bpk. Joko Santoso)",
-      title: "Main Earthworks Contractor",
-      email: "joko@bumimegah.co.id",
-      phone: "+62 821-4455-6677",
-      department: "Contractor Consortium"
-    },
-    {
-      id: "sh-5",
-      role: "End User",
-      name: "Bambang Wijaya, S.T.",
-      title: "Plant Operations & Site Manager",
-      email: "b.wijaya@manufacturing-plant.id",
-      phone: "+62 815-9988-7766",
-      department: "Operations Division"
-    }
+    { id: "s-1", name: "Sponsor Proyek", role: "Project Sponsor", interest: "Pengarah dan pemberi keputusan" },
+    { id: "s-2", name: "Ahmad Fauzi", role: "Project Manager", interest: "Mengelola dan mengendalikan proyek" },
+    { id: "s-3", name: "Engineering Department", role: "Engineering Team", interest: "Desain dan technical support" },
+    { id: "s-4", name: "Construction Department", role: "Construction Lead", interest: "Pelaksanaan pekerjaan di lapangan" },
+    { id: "s-5", name: "HSE Department", role: "Safety Officer", interest: "Pengawasan keselamatan kerja" },
+    { id: "s-6", name: "Procurement Department", role: "Procurement", interest: "Pengadaan material dan jasa" },
+    { id: "s-7", name: "Vendor / Subcontractor", role: "Vendor Mitra", interest: "Pelaksana pekerjaan konstruksi" },
+    { id: "s-8", name: "Pemerintah Daerah", role: "Regulator", interest: "Pemberi izin dan regulasi" },
+    { id: "s-9", name: "Pemilik Utilitas Existing", role: "External Partner", interest: "Koordinasi dan mitigasi konflik utilitas" },
+    { id: "s-10", name: "Masyarakat Sekitar", role: "Community", interest: "Pihak terdampak kegiatan proyek" }
   ]
 };
 
+// WBS matching Attachment 2 & Attachment 3 (Level 1 to Level 6 + PIC, Tool, Material)
 export const DEFAULT_WBS_TREE: WBSNode[] = [
   {
     id: "wbs-1",
     code: "1",
     level: 1,
-    name: "Pengerukan Tanah & Pekerjaan Tanah",
-    durationDays: 85,
-    assignedRole: "Project Manager",
-    costEstimate: 14500000000,
+    name: "Persiapan Umum",
+    durationWeeks: 4,
+    pic: "Project Manager",
     children: [
       {
         id: "wbs-1-1",
         code: "1.1",
         level: 2,
-        name: "Pekerjaan Persiapan & Survei Lahan",
-        durationDays: 14,
-        assignedRole: "Chief Surveyor",
-        costEstimate: 850000000,
+        name: "Persiapan Lahan & Survei",
+        durationWeeks: 2,
+        pic: "Chief Surveyor",
         children: [
           {
             id: "wbs-1-1-1",
             code: "1.1.1",
             level: 3,
-            name: "Pengukuran Topografi & Batas Lahan",
-            durationDays: 6,
-            assignedRole: "Survey Team A",
-            costEstimate: 320000000,
+            name: "Pemeriksaan & Survei Lokasi",
+            durationWeeks: 1,
+            pic: "Survey Team",
             children: [
               {
                 id: "wbs-1-1-1-1",
                 code: "1.1.1.1",
                 level: 4,
-                name: "Pemasangan Patok & Benchmarking Geodesi",
-                durationDays: 4,
-                assignedRole: "Geodetic Engineer",
-                costEstimate: 150000000,
+                name: "Pengukuran & Pematokan Jalur Pipa",
+                durationWeeks: 1,
+                pic: "Geodetic Engineer",
                 children: [
                   {
                     id: "wbs-1-1-1-1-1",
                     code: "1.1.1.1.1",
                     level: 5,
-                    name: "Verifikasi Elevasi Tanah Asli (Existing Level)",
-                    durationDays: 3,
-                    assignedRole: "Site Inspector",
-                    costEstimate: 75000000,
+                    name: "Pemeriksaan Bangunan Sekitar & Lokasi Shaft",
+                    durationWeeks: 1,
+                    pic: "Site Inspector",
+                    tool: "Alat ukur & kamera",
                     children: [
                       {
                         id: "wbs-1-1-1-1-1-1",
                         code: "1.1.1.1.1.1",
                         level: 6,
-                        name: "Penerbitan Berita Acara Survei & Peta Kontur",
-                        durationDays: 3,
-                        assignedRole: "GIS Lead",
-                        costEstimate: 40000000
+                        name: "Penerbitan Dokumen Perizinan & BA Lapangan",
+                        durationWeeks: 1,
+                        pic: "Legal & Surveyor",
+                        tool: "Laptop & Printer",
+                        material: "Dokumen Perizinan & Peta Jalur"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                id: "wbs-1-1-1-2",
+                code: "1.1.1.2",
+                level: 4,
+                name: "Pembuatan Pagar Sementara & Papan Nama Proyek",
+                durationWeeks: 1,
+                pic: "Mandor Sipil",
+                children: [
+                  {
+                    id: "wbs-1-1-1-2-1",
+                    code: "1.1.1.2.1",
+                    level: 5,
+                    name: "Membuat dan memasang papan nama proyek",
+                    durationWeeks: 1,
+                    pic: "Tukang Kayu",
+                    tool: "Paku dan palu",
+                    children: [
+                      {
+                        id: "wbs-1-1-1-2-1-1",
+                        code: "1.1.1.2.1.1",
+                        level: 6,
+                        name: "Pemasangan banner informasi proyek K3",
+                        durationWeeks: 1,
+                        pic: "HSE Officer",
+                        tool: "Palu & Tang",
+                        material: "Papan kayu, print banner"
                       }
                     ]
                   }
@@ -135,68 +185,97 @@ export const DEFAULT_WBS_TREE: WBSNode[] = [
             id: "wbs-1-1-2",
             code: "1.1.2",
             level: 3,
-            name: "Pembersihan & Penebasan Lahan (Land Clearing)",
-            durationDays: 8,
-            assignedRole: "Civil Foreman",
-            costEstimate: 530000000,
+            name: "Operasional & Fasilitas Lapangan",
+            durationWeeks: 2,
+            pic: "General Affair",
             children: [
               {
                 id: "wbs-1-1-2-1",
                 code: "1.1.2.1",
                 level: 4,
-                name: "Penebasan Semak Belukar & Pepohonan",
-                durationDays: 5,
-                assignedRole: "Equipment Operator",
-                costEstimate: 280000000
+                name: "Penyediaan Bangunan Kantor & Gudang",
+                durationWeeks: 1,
+                pic: "Logistics Lead",
+                children: [
+                  {
+                    id: "wbs-1-1-2-1-1",
+                    code: "1.1.2.1.1",
+                    level: 5,
+                    name: "Sewa bangunan kantor & barak kerja",
+                    durationWeeks: 1,
+                    pic: "Site Admin",
+                    tool: "Perangkat Kantor",
+                    children: [
+                      {
+                        id: "wbs-1-1-2-1-1-1",
+                        code: "1.1.2.1.1.1",
+                        level: 6,
+                        name: "Penyediaan instalasi air & sanitasi pekerja",
+                        durationWeeks: 1,
+                        pic: "Plumber",
+                        tool: "Alat kebersihan & pipa",
+                        material: "Tandon air & pipa PVC"
+                      }
+                    ]
+                  }
+                ]
               }
             ]
           }
         ]
-      },
+      }
+    ]
+  },
+  {
+    id: "wbs-2",
+    code: "2",
+    level: 1,
+    name: "Perencanaan Teknis",
+    durationWeeks: 4,
+    pic: "Engineering Head",
+    children: [
       {
-        id: "wbs-1-2",
-        code: "1.2",
+        id: "wbs-2-1",
+        code: "2.1",
         level: 2,
-        name: "Penggalian & Pengerukan Tanah (Excavation)",
-        durationDays: 40,
-        assignedRole: "Earthworks Superintendent",
-        costEstimate: 6200000000,
+        name: "Survei dan Investigasi Geoteknik",
+        durationWeeks: 2,
+        pic: "Geotech Engineer",
         children: [
           {
-            id: "wbs-1-2-1",
-            code: "1.2.1",
+            id: "wbs-2-1-1",
+            code: "2.1.1",
             level: 3,
-            name: "Galian Tanah Lunak & Sedang",
-            durationDays: 24,
-            assignedRole: "Heavy Equipment Crew",
-            costEstimate: 3800000000,
+            name: "Pengujian Tanah Sondir & CPT",
+            durationWeeks: 1,
+            pic: "Soil Lab Crew",
             children: [
               {
-                id: "wbs-1-2-1-1",
-                code: "1.2.1.1",
+                id: "wbs-2-1-1-1",
+                code: "2.1.1.1",
                 level: 4,
-                name: "Operasional Alat Berat Excavator Backhoe",
-                durationDays: 18,
-                assignedRole: "Excavator Operator Lead",
-                costEstimate: 2900000000,
+                name: "Pengambilan Sampel Sondir Lapangan",
+                durationWeeks: 1,
+                pic: "Mesin Sondir",
                 children: [
                   {
-                    id: "wbs-1-2-1-1-1",
-                    code: "1.2.1.1.1",
+                    id: "wbs-2-1-1-1-1",
+                    code: "2.1.1.1.1",
                     level: 5,
-                    name: "Pengerukan Lapisan Kedalaman 0 - 2 Meter",
-                    durationDays: 10,
-                    assignedRole: "Shift Supervisor",
-                    costEstimate: 1600000000,
+                    name: "Uji Laboratorium Daya Dukung Tanah",
+                    durationWeeks: 1,
+                    pic: "Analis Lab",
+                    tool: "Mesin Uji Tekan",
                     children: [
                       {
-                        id: "wbs-1-2-1-1-1-1",
-                        code: "1.2.1.1.1.1",
+                        id: "wbs-2-1-1-1-1-1",
+                        code: "2.1.1.1.1.1",
                         level: 6,
-                        name: "Pembentukan Lereng Talud Sesuai Slope Rencana",
-                        durationDays: 6,
-                        assignedRole: "Grade Checker",
-                        costEstimate: 600000000
+                        name: "Penerbitan Laporan Rekomendasi Pondasi Pipa",
+                        durationWeeks: 1,
+                        pic: "Geotech Specialist",
+                        tool: "Software Geoteknik",
+                        material: "Laporan Final Sondir"
                       }
                     ]
                   }
@@ -207,231 +286,198 @@ export const DEFAULT_WBS_TREE: WBSNode[] = [
         ]
       },
       {
-        id: "wbs-1-3",
-        code: "1.3",
+        id: "wbs-2-2",
+        code: "2.2",
         level: 2,
-        name: "Pemindahan & Pembuangan Material (Hauling & Disposal)",
-        durationDays: 32,
-        assignedRole: "Logistics Coordinator",
-        costEstimate: 4100000000,
+        name: "Perancangan Detail Teknik (DED)",
+        durationWeeks: 3,
+        pic: "Lead Pipeline Designer",
         children: [
           {
-            id: "wbs-1-3-1",
-            code: "1.3.1",
+            id: "wbs-2-2-1",
+            code: "2.2.1",
             level: 3,
-            name: "Pemuatan Material ke Dump Truck",
-            durationDays: 20,
-            assignedRole: "Pit Dispatcher",
-            costEstimate: 2100000000
-          },
+            name: "Pemodelan Hidrolis & Profil Aliran",
+            durationWeeks: 2,
+            pic: "Hydraulic Modeler"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: "wbs-3",
+    code: "3",
+    level: 1,
+    name: "Pengadaan Material dan Jasa",
+    durationWeeks: 6,
+    pic: "Procurement Manager",
+    children: [
+      {
+        id: "wbs-3-1",
+        code: "3.1",
+        level: 2,
+        name: "Pengadaan Pipa Distribusi & Fitting",
+        durationWeeks: 4,
+        pic: "Material Buyer",
+        children: [
           {
-            id: "wbs-1-3-2",
-            code: "1.3.2",
+            id: "wbs-3-1-1",
+            code: "3.1.1",
             level: 3,
-            name: "Pembuangan ke Area Disposal Resmi",
-            durationDays: 25,
-            assignedRole: "Disposal Supervisor",
-            costEstimate: 2000000000
+            name: "Pabrikasi Pipa HDPE & Valve Aksesoris",
+            durationWeeks: 3,
+            pic: "Pipe Manufacturer"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: "wbs-4",
+    code: "4",
+    level: 1,
+    name: "Konstruksi Jaringan",
+    durationWeeks: 12,
+    pic: "Site Construction Superintendent",
+    children: [
+      {
+        id: "wbs-4-1",
+        code: "4.1",
+        level: 2,
+        name: "Pekerjaan Galian dan Urug Kembali",
+        durationWeeks: 6,
+        pic: "Heavy Equipment Lead",
+        children: [
+          {
+            id: "wbs-4-1-1",
+            code: "4.1.1",
+            level: 3,
+            name: "Galian Parit Jalur Pipa per Zona",
+            durationWeeks: 4,
+            pic: "Excavator Operator"
           }
         ]
       },
       {
-        id: "wbs-1-4",
-        code: "1.4",
+        id: "wbs-4-2",
+        code: "4.2",
         level: 2,
-        name: "Penimbunan Kembali & Pemadatan (Backfilling & Compaction)",
-        durationDays: 25,
-        assignedRole: "Soil Compaction Specialist",
-        costEstimate: 3350000000,
+        name: "Pemasangan Pipa dan Aksesoris",
+        durationWeeks: 8,
+        pic: "Pipelaying Foreman",
         children: [
           {
-            id: "wbs-1-4-1",
-            code: "1.4.1",
+            id: "wbs-4-2-1",
+            code: "4.2.1",
             level: 3,
-            name: "Penghamparan Material Tanah Pilihan (Selected Fill)",
-            durationDays: 16,
-            assignedRole: "Roller Operator",
-            costEstimate: 2400000000
-          },
-          {
-            id: "wbs-1-4-2",
-            code: "1.4.2",
-            level: 3,
-            name: "Pengujian Kepadatan Tanah Terpasang",
-            durationDays: 9,
-            assignedRole: "Geotechnical QA/QC",
-            costEstimate: 950000000
+            name: "Penyambungan Butt Fusion & Valve Chamber",
+            durationWeeks: 6,
+            pic: "Welder Bersertifikat"
           }
         ]
+      }
+    ]
+  },
+  {
+    id: "wbs-5",
+    code: "5",
+    level: 1,
+    name: "Pengujian dan Serah Terima",
+    durationWeeks: 3,
+    pic: "QA/QC Manager",
+    children: [
+      {
+        id: "wbs-5-1",
+        code: "5.1",
+        level: 2,
+        name: "Uji Tekan (Hydrotest) & Desinfeksi",
+        durationWeeks: 2,
+        pic: "Testing Specialist"
+      }
+    ]
+  },
+  {
+    id: "wbs-6",
+    code: "6",
+    level: 1,
+    name: "Operasi dan Pemeliharaan Awal",
+    durationWeeks: 2,
+    pic: "Operation Lead",
+    children: [
+      {
+        id: "wbs-6-1",
+        code: "6.1",
+        level: 2,
+        name: "Commissioning & Uji Aliran ke Pelanggan",
+        durationWeeks: 2,
+        pic: "Plant Operations"
       }
     ]
   }
 ];
 
+// CPM in WEEKS (Minggu)
 export const DEFAULT_CPM_TASKS: CPMTask[] = [
   {
     id: "A",
-    name: "Survei Topografi & Benchmarking",
-    duration: 5,
+    name: "Survei Topografi & Desain DED",
+    duration: 3, // 3 minggu
     predecessors: []
   },
   {
     id: "B",
-    name: "Pembersihan Lahan & Land Clearing",
-    duration: 7,
+    name: "Perizinan Jalur & Permit PU",
+    duration: 4, // 4 minggu
     predecessors: ["A"]
   },
   {
     id: "C",
-    name: "Pemasangan Pagar Proyek & Pos Jaga",
-    duration: 4,
+    name: "Penyediaan Fasilitas Lapangan & Pagar",
+    duration: 2, // 2 minggu
     predecessors: ["A"]
   },
   {
     id: "D",
-    name: "Mobilisasi Alat Berat & Excavator",
-    duration: 3,
+    name: "Pengadaan Pipa HDPE 12 km & Fitting",
+    duration: 6, // 6 minggu
     predecessors: ["B"]
   },
   {
     id: "E",
-    name: "Pengerukan & Penggalian Tanah Masif",
-    duration: 18,
-    predecessors: ["B", "D"]
+    name: "Pekerjaan Galian & Penyangga Tanah",
+    duration: 5, // 5 minggu
+    predecessors: ["B", "C"]
   },
   {
     id: "F",
-    name: "Dewatering & Saluran Drainase Sementara",
-    duration: 6,
-    predecessors: ["C", "B"]
+    name: "Penyambungan Pipa & Butt Fusion",
+    duration: 7, // 7 minggu
+    predecessors: ["D", "E"]
   },
   {
     id: "G",
-    name: "Pemadatan Subgrade & Penghamparan Fill",
-    duration: 12,
-    predecessors: ["E", "F"]
+    name: "Pemasangan Gate Valve & Aksesoris",
+    duration: 3, // 3 minggu
+    predecessors: ["F"]
   },
   {
     id: "H",
-    name: "Uji Sand Cone & Final Site Handover",
-    duration: 4,
+    name: "Hydrotest, Flushing & Handover BAST",
+    duration: 2, // 2 minggu
     predecessors: ["G"]
   }
 ];
 
-import { INITIAL_READINESS_CHECKLIST } from './readinessChecklistData';
-import { Project } from '../types/pmo';
-
 export const DEFAULT_PROJECTS: Project[] = [
   {
     id: "proj-1",
-    createdAt: "2026-10-01",
-    updatedAt: "2026-10-19",
+    createdAt: "2026-08-01",
+    updatedAt: "2026-10-20",
+    targetDurationWeeks: 24, // 6 Bulan = 24 Minggu
     charter: DEFAULT_PROJECT_CHARTER,
     wbsTree: DEFAULT_WBS_TREE,
     cpmTasks: DEFAULT_CPM_TASKS,
     checklistItems: INITIAL_READINESS_CHECKLIST,
-  },
-  {
-    id: "proj-2",
-    createdAt: "2026-10-10",
-    updatedAt: "2026-10-18",
-    charter: {
-      projectName: "Implementasi Sistem Cloud ERP & Data Warehouse PMO",
-      projectCode: "PMO-PRE-2026-092",
-      projectSponsor: "Direktur Transformasi Digital & IT",
-      projectManager: "Aubrey Fathur, PMP",
-      startDate: "2026-12-01",
-      targetEndDate: "2027-06-30",
-      budgetEstimated: "4,200,000,000",
-      currency: "IDR",
-      selectedScopeCategories: [
-        "Software & System Architecture",
-        "Hardware Procurement & Cloud",
-        "Sistem MEP & Utilitas"
-      ],
-      scopeObjectives: "Membangun pondasi sistem enterprise resource planning (ERP) terintegrasi berbasis cloud untuk otomasi pelaporan PMO dan manajemen aset terpusat.",
-      inScopeDeliverables: "1. Dokumen Software Requirement Specs (SRS).\n2. Setup cloud environment & security policy.\n3. Modul Finance, Procurement, dan PMO Project Tracking.\n4. Integrasi single sign-on (SSO) dan training 120 key users.",
-      outOfScopeExclusions: "1. Custom pengembangan modul logistik pihak ketiga (fase 2).\n2. Penggantian seluruh laptop operasional cabang.",
-      keyAssumptions: "1. Ketersediaan bandwidth internet stabil di 5 kantor wilayah.\n2. Key users dapat dialokasikan minimal 20 jam/minggu untuk User Acceptance Testing (UAT).",
-      stakeholders: [
-        {
-          id: "sh-2-1",
-          role: "Sponsor",
-          name: "Dr. Pratama Kusuma",
-          title: "Chief Information Officer",
-          email: "pratama.k@corp.id",
-          phone: "+62 811-3344-5566",
-          department: "IT Leadership"
-        },
-        {
-          id: "sh-2-2",
-          role: "PM",
-          name: "Aubrey Fathur, PMP",
-          title: "Senior Enterprise PM",
-          email: "aubrey.f@corp.id",
-          phone: "+62 812-3456-7890",
-          department: "PMO Division"
-        }
-      ]
-    },
-    wbsTree: [
-      {
-        id: "wbs-2-1",
-        code: "1",
-        level: 1,
-        name: "Implementasi Sistem Informasi & IT PMO",
-        durationDays: 60,
-        assignedRole: "Project Manager",
-        children: [
-          {
-            id: "wbs-2-1-1",
-            code: "1.1",
-            level: 2,
-            name: "Analisis Kebutuhan & Desain Solusi",
-            durationDays: 20,
-            assignedRole: "Lead System Analyst",
-            children: [
-              {
-                id: "wbs-2-1-1-1",
-                code: "1.1.1",
-                level: 3,
-                name: "User Requirement Gathering & Workshops",
-                durationDays: 10,
-                assignedRole: "Analyst"
-              },
-              {
-                id: "wbs-2-1-1-2",
-                code: "1.1.2",
-                level: 3,
-                name: "Desain Arsitektur Sistem & Database",
-                durationDays: 10,
-                assignedRole: "Cloud Architect"
-              }
-            ]
-          },
-          {
-            id: "wbs-2-1-2",
-            code: "1.2",
-            level: 2,
-            name: "Pengembangan Modul & Integrasi",
-            durationDays: 40,
-            assignedRole: "Dev Lead"
-          }
-        ]
-      }
-    ],
-    cpmTasks: [
-      { id: "A", name: "Inisiasi & Setup Server Cloud", duration: 7, predecessors: [] },
-      { id: "B", name: "Penyusunan SRS & Approval", duration: 12, predecessors: ["A"] },
-      { id: "C", name: "Konfigurasi Database & Keamanan", duration: 8, predecessors: ["B"] },
-      { id: "D", name: "User Acceptance Testing (UAT)", duration: 14, predecessors: ["C"] }
-    ],
-    checklistItems: INITIAL_READINESS_CHECKLIST.map((item, idx) => ({
-      ...item,
-      isCompleted: idx < 12,
-      completedAt: idx < 12 ? "2026-10-12 10:00" : undefined
-    }))
   }
 ];
-

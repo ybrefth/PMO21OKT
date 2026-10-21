@@ -5,35 +5,53 @@ export interface ProjectCharterData {
   projectManager: string;
   startDate: string;
   targetEndDate: string;
-  budgetEstimated: string;
-  currency: string;
-  selectedScopeCategories: string[];
-  scopeObjectives: string;
-  inScopeDeliverables: string;
-  outOfScopeExclusions: string;
-  keyAssumptions: string;
-  stakeholders: StakeholderItem[];
+  durationText: string;
+  budgetEstimated: string; // e.g. "Rp 15 Miliar" or number formatted
+  currency: string; // default "Rp"
+  // Structured Sections matching Attachment 1:
+  businessNeed: string; // 1. Business Need
+  projectObjectives: string[]; // 2. Project Objectives
+  inScope: string[]; // 3. In Scope
+  outOfScope: string[]; // 3. Out of Scope
+  keyDeliverables: string[]; // 4. Key Deliverables
+  topRisks: string[]; // 5. Top Risks
+  successCriteria: string[]; // 6. Success Criteria
+  keyMilestones: MilestoneItem[]; // 7. Key Milestones
+  stakeholders: StakeholderItem[]; // 8. Key Stakeholders
+  selectedScopeCategories?: string[];
+  scopeObjectives?: string;
+  inScopeDeliverables?: string;
+  outOfScopeExclusions?: string;
+  keyAssumptions?: string;
   lastSaved?: string;
+}
+
+export interface MilestoneItem {
+  id: string;
+  no: number;
+  milestone: string;
+  targetDate: string;
 }
 
 export interface StakeholderItem {
   id: string;
-  role: 'Sponsor' | 'Steering Committee' | 'PM' | 'Vendor' | 'End User' | 'Quality Lead' | 'Finance Lead';
+  role: string; // e.g., 'Sponsor Proyek', 'Project Manager', 'Engineering Dept', etc.
   name: string;
-  title: string;
-  email: string;
-  phone: string;
-  department: string;
+  interest: string; // Peran / Kepentingan
+  department?: string;
+  email?: string;
+  phone?: string;
 }
 
 export interface WBSNode {
   id: string;
-  code: string; // e.g., "1", "1.1", "1.1.2"
+  code: string; // e.g. "1.1", "1.1.1", "1.1.1.1", etc.
   level: number; // 1 to 6
   name: string;
-  durationDays: number;
-  assignedRole?: string;
-  costEstimate?: number;
+  durationWeeks?: number; // duration in weeks
+  pic?: string; // Penanggung Jawab (PIC)
+  tool?: string; // Alat / Tool (untuk Level 5 & 6)
+  material?: string; // Material / Dokumen / Sumber Daya (untuk Level 6)
   children?: WBSNode[];
   parentId?: string | null;
 }
@@ -41,26 +59,27 @@ export interface WBSNode {
 export interface CPMTask {
   id: string;
   name: string;
-  duration: number; // in days
+  duration: number; // in WEEKS (Minggu)
   predecessors: string[]; // task IDs, e.g. ["A", "B"]
-  // Calculated fields:
-  es?: number; // Early Start
-  ef?: number; // Early Finish
-  ls?: number; // Late Start
-  lf?: number; // Late Finish
-  slack?: number; // Total Float
-  freeSlack?: number; // Free Float
+  // Calculated fields (in WEEKS):
+  es?: number; // Early Start (Minggu)
+  ef?: number; // Early Finish (Minggu)
+  ls?: number; // Late Start (Minggu)
+  lf?: number; // Late Finish (Minggu)
+  slack?: number; // Total Float / Buffer (Minggu)
+  freeSlack?: number; // Free Float (Minggu)
   isCritical?: boolean;
-  crashPotentialDays?: number; // potential crashing days
 }
 
 export interface CPMCalculationResult {
   tasks: CPMTask[];
   criticalPath: string[]; // Task IDs on critical path in order
-  totalDuration: number;
+  totalDuration: number; // in Weeks
+  targetDuration: number; // Target project duration in Weeks (set in advance)
+  durationVariance: number; // Target - Critical Path (positive = ahead/buffer, negative = overrun)
   criticalTasksCount: number;
   nonCriticalTasksCount: number;
-  averageSlack: number;
+  averageSlack: number; // in Weeks
   crashingRecommendations: CrashingRecommendation[];
   hasCycle: boolean;
 }
@@ -68,10 +87,10 @@ export interface CPMCalculationResult {
 export interface CrashingRecommendation {
   taskId: string;
   taskName: string;
-  currentDuration: number;
-  recommendedMaxReduction: number;
+  currentDuration: number; // weeks
+  recommendedMaxReduction: number; // weeks
   rationale: string;
-  priority: 'High' | 'Medium' | 'Low';
+  priority: 'Tinggi' | 'Sedang' | 'Rendah';
 }
 
 export interface ReadinessChecklistItem {
@@ -91,9 +110,16 @@ export interface Project {
   id: string;
   createdAt: string;
   updatedAt: string;
+  targetDurationWeeks?: number;
   charter: ProjectCharterData;
   wbsTree: WBSNode[];
   cpmTasks: CPMTask[];
   checklistItems: ReadinessChecklistItem[];
 }
 
+export interface WBSTemplateCategory {
+  id: string;
+  name: string;
+  description: string;
+  tree: WBSNode[];
+}

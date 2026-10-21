@@ -135,16 +135,16 @@ export default function App() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-14">
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded bg-slate-900 text-white flex items-center justify-center font-bold text-xs">
+                <div className="w-7 h-7 rounded bg-slate-900 text-white flex items-center justify-center font-bold text-xs tracking-wider">
                   PMO
                 </div>
                 <div>
-                  <h1 className="text-xs font-bold text-slate-900 leading-tight">Pre-Project Hub</h1>
-                  <p className="text-[10px] text-slate-500 font-mono leading-tight">Documentation & Readiness</p>
+                  <h1 className="text-sm font-bold text-slate-900 leading-tight">Daftar Proyek</h1>
+                  <p className="text-[10px] text-slate-500 font-medium leading-tight">Project Management Office</p>
                 </div>
               </div>
               <div className="text-xs text-slate-500 font-medium hidden sm:block">
-                Standard PMO Pre-Project Governance
+                Dokumentasi & Tata Kelola Proyek
               </div>
             </div>
           </div>

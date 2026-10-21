@@ -67,8 +67,8 @@ export const ProjectList: React.FC<ProjectListProps> = ({
         code: "1",
         level: 1,
         name: projectName.trim(),
-        durationDays: 30,
-        assignedRole: "Project Manager",
+        durationWeeks: 4,
+        pic: "Project Manager",
         children: []
       }];
       initialCpm = [
@@ -109,15 +109,11 @@ export const ProjectList: React.FC<ProjectListProps> = ({
   return (
     <div className="space-y-6">
       {/* Top Banner & Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-200">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="px-2 py-0.5 text-[11px] font-bold bg-slate-900 text-white rounded">PMO SUITE</span>
-            <span className="text-xs text-slate-500">Multi-Project Management</span>
-          </div>
-          <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Daftar Proyek Pre-Project</h2>
+          <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Daftar Proyek</h2>
           <p className="text-xs text-slate-600 mt-1 max-w-2xl">
-            Pilih proyek untuk mengelola Project Charter, WBS Bertahap, Analisis CPM (Jalur Kritis), dan 40 Checklist Kesiapan Proyek.
+            Pilih proyek untuk mengelola Project Charter, WBS Bertahap (Level 1-6 + PIC), Analisis CPM (Jalur Kritis), dan Checklist Kesiapan Proyek.
           </p>
         </div>
 
